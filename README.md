@@ -11,43 +11,45 @@
   <a href="https://github.com/Pryaxis/TShock/blob/general-devel/README_cn.md">查看中文版</a>
 </p>
 
-TShock is a toolbox for Terraria servers and communities. That toolbox is jam packed with anti-cheat tools, server-side characters, groups, permissions, item bans, tons of commands, and limitless potential. It's one of a kind.
 
-This is the readme for TShock developers and hackers. We're building out new [TShock documentation](https://ikebukuro.tshock.co/) for server operators and plugin developers, but this is a work-in-progress right now.
+**TShock** — это универсальный набор инструментов для серверов и сообществ Terraria. Этот «инструментарий» до краев наполнен средствами защиты от читов, серверными персонажами (SSC), группами, правами доступа, банами предметов, множеством команд и безграничным потенциалом. Это уникальное в своем роде решение.
 
-## Developing TShock
+Это руководство (README) предназначено для **разработчиков и хакеров** TShock. Мы активно работаем над новой [документацией TShock](https://ikebukuro.tshock.co/) для администраторов серверов и разработчиков плагинов, но на данный момент она находится в процессе наполнения.
 
-If you want to contribute to TShock by sending a pull request or customize it to suit your own sparkly desires, this is the best starting point. By the end of this, you'll be able to build TShock from source, start to finish. More than that, though, you'll know how to start on the path of becoming an expert TShock developer.
+## Разработка TShock
 
-This guide works assuming that you have the [.NET 6 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) installed and that you're familiar with the command line. If that doesn't describe you, you should be able to accomplish the same thing using Visual Studio 2022 or Visual Studio Code.
+Если вы хотите внести свой вклад в TShock, отправив Pull Request, или настроить его под свои специфические нужды, этот раздел — лучшая отправная точка. К концу прочтения вы сможете самостоятельно собрать TShock из исходного кода и начнете свой путь становления экспертом в разработке TShock.
 
-1. Clone the repository: `git clone https://github.com/Pryaxis/TShock.git --recurse-submodules`
-1. `cd TShock` to enter the repo.
-1. `dotnet build`. No really, that will build things!
+Это руководство предполагает, что у вас установлен [.NET 6 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) (я использовал .NET 9 SDK) и вы знакомы с командной строкой. Если это не так, вы можете добиться того же результата, используя Visual Studio 2022 или Visual Studio Code.
 
-If you want to run the `TShockLauncher` (which runs a server), run:
+1. Клонируйте репозиторий: `git clone https://github.com/Pryaxis/TShock.git --recurse-submodules`
+2. Перейдите в папку: `cd TShock`
+3. Соберите проект: `dotnet build`. Да, всё настолько просто!
+
+Если вы хотите запустить `TShockLauncher` (который запускает сервер), выполните:
 
 1. `dotnet run --project TShockLauncher`
 
-To produce a packaged release (suitable for distribution), run:
+Для создания готовой сборки (пригодной для распространения):
 
 1. `cd TShockLauncher`
-1. `dotnet publish -r win-x64 -f net9.0 -c Release -p:PublishSingleFile=true --self-contained false`
+2. `dotnet publish -r win-x64 -f net9.0 -c Release -p:PublishSingleFile=true --self-contained false`
 
-Note that in this example, you'd be building for `win-x64`. You can build for `win-x64`, `osx-x64`, `linux-x64`, `linux-arm64`, `linux-arm`. Your release will be in the `TShockLauncher/bin/Release/net9.0/` folder under the architecture you specified.
+*Примечание: в этом примере сборка идет под `win-x64`. Вы также можете собирать под `osx-x64`, `linux-x64`, `linux-arm64` или `linux-arm`. Готовый результат будет находиться в папке `TShockLauncher/bin/Release/net9.0/` в подпапке соответствующей архитектуры.*
 
-### Working with Terraria
+### Работа с кодом Terraria
 
-Working with Terraria in TShock and in other Terraria Server API plugins is different from most other APIs. Due to the nature of how OTAPI works, you have direct access to all public fields in the `Terraria` namespace. This means that you can access Terraria member methods directly. TShock and other plugins do this quite often, mostly to modify the game world, send data, and receive data. Calls to `Main` are one such example of direct access to Terraria. This is the equivalent to `net.minecraft.server` (NMS) calls in CraftBukkit.
+Работа с Terraria в TShock и других плагинах Terraria Server API отличается от большинства других API. Благодаря тому, как работает OTAPI, у вас есть прямой доступ ко всем публичным полям в пространстве имен `Terraria`. Это означает, что вы можете напрямую обращаться к методам классов Terraria. TShock и плагины часто используют это для модификации игрового мира, отправки и получения данных. Обращения к классу `Main` — один из таких примеров. Это эквивалентно вызовам `net.minecraft.server` (NMS) в CraftBukkit.
 
-You might find yourself wondering where these fields are. Pryaxis provides the decompiled [Sources](https://github.com/pryaxis/Sources) to Terraria's server, updated with each release. These sources are made available to developers of TShock. If you have submitted a pull request to TShock, reach out on Discord to get access. In lieu of this, you can download `ILSpy` and decompile Terraria or the server itself.
+Вам может быть интересно, где найти эти поля. Pryaxis предоставляет декомпилированные [исходники (Sources)](https://github.com/pryaxis/Sources) сервера Terraria, обновляемые с каждым релизом. Эти исходники доступны разработчикам TShock. Если вы отправили Pull Request в TShock, свяжитесь с нами в Discord, чтобы получить доступ. В качестве альтернативы вы можете скачать `ILSpy` и самостоятельно декомпилировать `TerrariaServer.exe`.
 
-Finally, you may be interested in developing other Terraria Server API plugins. The [TShockResources](https://github.com/TShockResources) organization has several plugins you can look at and build on. TShock is itself a plugin, and most plugins are open source. This gives you ample room to figure out where to go next.
+Наконец, если вы заинтересованы в разработке плагинов, загляните в организацию [TShockResources](https://github.com/TShockResources) — там много примеров. Сам TShock тоже является плагином, и большинство плагинов имеют открытый исходный код, что дает вам огромную базу для изучения.
 
-Need help? Join us on [Discord](https://discord.gg/Cav9nYX).
+Нужна помощь? Присоединяйтесь к нам в [Discord](https://discord.gg/Cav9nYX).
 
-## Code of Conduct
+---
 
-> By participating in the TShock for Terraria community, all members will adhere to maintaining decorum with respect to all humans, in and out of the community. Members will not engage in discussion that inappropriately disparages or marginalizes any group of people or any individual. Members will not attempt to further or advance an agenda to the point of being overbearing or close minded (such as through spreading FUD). Members will not abuse services provided to them and will follow the guidance of community leaders on a situational basis about what abuse consists of. Members will adhere to United States and international law. If members notice a violation of this code of conduct, they will not engage but will instead contact the leadership team on either the forums or Discord.
+## Кодекс поведения
 
-> Do not attempt to circumvent or bypass the code of conduct by using clever logic or reasoning (e.g., insulting Facepunch members, because they weren't directly mentioned here).
+> Участвуя в сообществе TShock для Terraria, все участники обязуются соблюдать нормы приличия и уважительно относиться ко всем людям как внутри сообщества, так и за его пределами. Участники не должны вступать в дискуссии, которые ненадлежащим образом порочат или ущемляют любую группу людей или отдельное лицо. Участники не должны навязывать свою повестку дня до такой степени, чтобы это становилось деспотичным или предвзятым (например, путем распространения FUD — страха, неуверенности и сомнений). Участники не должны злоупотреблять предоставляемыми им услугами и должны следовать указаниям лидеров сообщества в вопросах того, что считать злоупотреблением в конкретной ситуации. Участники должны соблюдать законодательство США и международное право. Если участник заметил нарушение данного кодекса, он не должен вступать в конфликт, а обязан связаться с командой руководства на форуме или в Discord.
+> Не пытайтесь обойти кодекс поведения, используя уловки или формальную логику (например, «оскорбление участников Facepunch допустимо, потому что они не упомянуты здесь напрямую»).
